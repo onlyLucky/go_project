@@ -3,6 +3,7 @@ package request
 import (
 	"fmt"
 	"net/http"
+	"reflect"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,6 +19,8 @@ type dynamicType struct {
 	BookId string `json:"book_id,omitempty"`
 }
 
+
+
 type Msg[T dataType] struct {
 	Data   T  `json:"data"`
 	Message string `json:"msg"`
@@ -30,6 +33,10 @@ func RequestRouter(router *gin.Engine) {
 	// 动态参数
 	router.GET("/dynamicParam/:user_id",getDynamicParam)
 	router.GET("/dynamicParam/:user_id/:book_id",getDynamicParam)
+	// 表单提交
+	router.POST("/postForm", postForm)
+	// 原始参数
+	router.POST("/getRawData", postGetRawData)
 }
 
 func getQuery(c *gin.Context){
@@ -64,4 +71,19 @@ func getDynamicParam(c *gin.Context){
 	 	http.StatusOK,
 	}
 	c.JSON(http.StatusOK, msg)
+}
+
+func postForm(c *gin.Context){
+	fmt.Println("postForm: ",c.PostForm("name"))
+	fmt.Println("postForm: ",c.PostFormArray("name"),reflect.TypeOf(c.PostFormArray("name")))
+	fmt.Println("postForm: ",c.DefaultPostForm("addr", "sichuan")) // 如果用户没传，就使用默认值
+	forms, err := c.MultipartForm()               // 接收所有的form参数，包括文件
+  fmt.Println("postForm: ",forms, err)
+	msg := Msg[string]{"postForm", "success", http.StatusOK}
+	c.JSON(http.StatusOK, msg)
+}
+
+func postGetRawData(c *gin.Context){
+	body, _ := c.GetRawData()
+	contentType := c.GetHeader("Content-Type")
 }

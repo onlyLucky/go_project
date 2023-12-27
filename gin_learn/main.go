@@ -2,6 +2,7 @@ package main
 
 import (
 	"ginLearn/request"
+	"ginLearn/response"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -16,8 +17,9 @@ func main() {
 	router := gin.Default()
 	// 绑定路由规则和路由函数，访问/index的路由，将由对应的函数处理掉
 	router.GET("/index", Index)
-
-	// 请求
+	// 1.响应 路由
+	response.HandleRouter(router)
+	// 2请求 路由
 	request.RequestRouter(router)
 	// 启动监听，gin会把web服务运行在本机的0.0.0.0:8080端口上
 	router.Run("0.0.0.0:8080")

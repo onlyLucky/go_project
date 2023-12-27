@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>animation01</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <!-- wind flow velocity -->
+  <!-- ari moving from hight to low pressure -->
+  <div class="channel">
+    wind flow velocity
+  </div>
+  <div class="container">
+    <!-- 速度切换开关 -->
+    <!-- class="switched" -->
+    <div id="switch" >
+      <div class="circle"></div>
+    </div>
+    <!-- 主画布 -->
+    <div class="main">
+      <!-- 太阳的后裔 -->
+      <div class="sun">
+        <!-- (span[style=--i:$])*8 -->
+        <span style="--i:1"></span>
+        <span style="--i:2"></span>
+        <span style="--i:3"></span>
+        <span style="--i:4"></span>
+        <span style="--i:5"></span>
+        <span style="--i:6"></span>
+        <span style="--i:7"></span>
+        <span style="--i:8"></span>
+      </div>
+
+      <!-- 愚公凿(通造)山 -->
+      <div class="mountain a"></div>
+      <div class="mountain b"></div>
+      <div class="mountain c"></div>
+      <div class="mountain d"></div>
+      <div class="mountain e"></div>
+
+      <!-- 风云 大剧院-->
+
+      <div class="cloud_wind_wrap_fast">
+        <div class="cloud_wind_wrap_slow">
+          <div class="cloud-wind-box" style="--i:1">
+            <div class="cloud a">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="cloud b">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="cloud c">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+    
+            <!-- 风 -->
+            <div class="wind a">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+    
+            <div class="wind b">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+    
+            <div class="wind-s">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+    
+          <div class="cloud-wind-box" style="--i:2">
+            <div class="cloud a">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="cloud b">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="cloud c">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+    
+            <!-- 风 -->
+            <div class="wind a">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+    
+            <div class="wind b">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+    
+            <div class="wind-s">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+    
+          <div class="cloud-wind-box" style="--i:3">
+            <div class="cloud a">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="cloud b">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="cloud c">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+    
+            <!-- 风 -->
+            <div class="wind a">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+    
+            <div class="wind b">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+    
+            <div class="wind-s">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 要想富，先种树 -->
+      <div class="grove">
+        <div class="tree">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+
+      <!-- 绿色生活，转动风车 -->
+      <div class="windmill-box">
+        <!-- 风车 -->
+        <div class="windmill">
+          <!-- 支架 -->
+          <div class="pole"></div>
+          <!-- 顶部 -->
+          <div class="head">
+            <!-- 扇叶 -->
+            <div class="fan">
+              <span style="--i:1"></span>
+              <span style="--i:2"></span>
+              <span style="--i:3"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="windmill a">
+          <!-- 支架 -->
+          <div class="pole"></div>
+          <!-- 顶部 -->
+          <div class="head">
+            <!-- 扇叶 -->
+            <div class="fan">
+              <span style="--i:1"></span>
+              <span style="--i:2"></span>
+              <span style="--i:3"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="windmill b">
+          <!-- 支架 -->
+          <div class="pole"></div>
+          <!-- 顶部 -->
+          <div class="head">
+            <!-- 扇叶 -->
+            <div class="fan">
+              <span style="--i:1"></span>
+              <span style="--i:2"></span>
+              <span style="--i:3"></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+
+    </div>
+  </div>
+ 
+
+  <!-- js处理逻辑 -->
+  <script>
+    // 开关切换
+    let swch = document.getElementById('switch');
+
+    // container element
+    let container = document.querySelector('.container')
+
+    swch.addEventListener('click', (e) => {
+      // swch.classList.toggle('switched');
+      if(swch.classList.contains('switched')){
+        swch.classList.remove('switched')  
+        container.classList.remove('slow')
+      }else{
+        swch.classList.add('switched')
+        container.classList.add('slow')
+      }
+    })
+  </script>
+</body>
+</html>

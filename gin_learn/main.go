@@ -1,6 +1,7 @@
 package main
 
 import (
+	"ginLearn/binders"
 	"ginLearn/request"
 	"ginLearn/response"
 	"net/http"
@@ -19,8 +20,11 @@ func main() {
 	router.GET("/index", Index)
 	// 1.响应 路由
 	response.HandleRouter(router)
-	// 2请求 路由
+	// 2.请求 路由
 	request.RequestRouter(router)
+	// 3.绑定器 路由
+	binders.BindersRouter(router)
+	
 	// 启动监听，gin会把web服务运行在本机的0.0.0.0:8080端口上
 	router.Run("0.0.0.0:8080")
 	// 用原生http服务的方式，router.Run本质就是http.ListenAndServe的进一步封装

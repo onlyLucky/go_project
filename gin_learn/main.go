@@ -4,6 +4,7 @@ import (
 	"ginLearn/binders"
 	"ginLearn/request"
 	"ginLearn/response"
+	"ginLearn/upload"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -24,6 +25,8 @@ func main() {
 	request.RequestRouter(router)
 	// 3.绑定器 路由
 	binders.BindersRouter(router)
+	// 4.文件上传
+	upload.UploadRouter(router)
 	
 	// 启动监听，gin会把web服务运行在本机的0.0.0.0:8080端口上
 	router.Run("0.0.0.0:8080")

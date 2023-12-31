@@ -2,6 +2,7 @@ package main
 
 import (
 	"ginLearn/binders"
+	"ginLearn/download"
 	"ginLearn/request"
 	"ginLearn/response"
 	"ginLearn/upload"
@@ -27,6 +28,8 @@ func main() {
 	binders.BindersRouter(router)
 	// 4.文件上传
 	upload.UploadRouter(router)
+	// 5.文件下载
+	download.DownloadRouter(router)
 	
 	// 启动监听，gin会把web服务运行在本机的0.0.0.0:8080端口上
 	router.Run("0.0.0.0:8080")

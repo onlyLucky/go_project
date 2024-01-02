@@ -14,6 +14,8 @@ const (
 	infoLog = "info"
 )
 
+
+
 type FileLevelHook struct {
 	file     *os.File
 	errFile  *os.File

@@ -16,9 +16,9 @@ func main() {
 	3.日志分割
 	按时间分割 自定义write方法
 	*/
-	logSplit.LogSplitByTimer()
+	// logSplit.LogSplitByTimer()
 	// 按时间分割 自定义hook
-	logSplit.LogSplitByTimerHook()
+	// logSplit.LogSplitByTimerHook()
 	// 按日志等级分割
 	logSplit.LogSplitByLevel()
 }

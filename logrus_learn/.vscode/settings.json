@@ -3,6 +3,7 @@
     "Debugln",
     "Errorln",
     "fengfeng",
+    "Infof",
     "Infoln",
     "logrus",
     "sirupsen",

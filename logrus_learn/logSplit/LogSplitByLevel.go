@@ -14,9 +14,7 @@ const (
 	infoLog = "info"
 )
 
-
-
-type FileLevelHook struct {
+type fileLevelHook struct {
 	file     *os.File
 	errFile  *os.File
 	warnFile *os.File
@@ -24,11 +22,11 @@ type FileLevelHook struct {
 	logPath  string
 }
 
-func (hook FileLevelHook) Levels() []logrus.Level {
+func (hook fileLevelHook) Levels() []logrus.Level {
   return logrus.AllLevels
 }
 
-func (hook FileLevelHook) Fire(entry *logrus.Entry) error {
+func (hook fileLevelHook) Fire(entry *logrus.Entry) error {
   line, _ := entry.String()
   switch entry.Level {
   case logrus.ErrorLevel:
@@ -42,7 +40,7 @@ func (hook FileLevelHook) Fire(entry *logrus.Entry) error {
   return nil
 }
 
-func InitLevel(logPath string) {
+func initLevel(logPath string) {
   err := os.MkdirAll(fmt.Sprintf("%s", logPath), os.ModePerm)
   if err != nil {
     logrus.Error(err)
@@ -52,12 +50,12 @@ func InitLevel(logPath string) {
   errFile, err := os.OpenFile(fmt.Sprintf("%s/%s.log", logPath, errLog), os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0600)
   warnFile, err := os.OpenFile(fmt.Sprintf("%s/%s.log", logPath, warnLog), os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0600)
   infoFile, err := os.OpenFile(fmt.Sprintf("%s/%s.log", logPath, infoLog), os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0600)
-  fileHook := FileLevelHook{allFile, errFile, warnFile, infoFile, logPath}
+  fileHook := fileLevelHook{allFile, errFile, warnFile, infoFile, logPath}
   logrus.AddHook(&fileHook)
 }
 
 func LogSplitByLevel() {
-	InitLevel("log/logrusLearn")
+	initLevel("log/logrusLearn")
   logrus.Errorln("你好")
   logrus.Errorln("err")
   logrus.Warnln("warn")

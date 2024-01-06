@@ -1,0 +1,40 @@
+-- SQLBook: Markup
+<div align="center">
+  <h1>mysql单表查询</h1>
+  <p></p>
+</div>
+
+## select
+
+MySQL 的 SELECT 语句用于从数据库表中检索数据。功能强大，语句结构复杂多样。
+
+一个完整的 SELECT 语句包含一些可选的子句。SELECT 语句定义如下
+-- SQLBook: Code
+SELECT clause
+[FROM clause]
+[WHERE clause]
+[GROUP BY clause]
+[HAVING clause]
+[ORDER BY clause]
+[LIMIT clause]
+
+-- SQLBook: Markup
+不同子句的执行顺序
+-- SQLBook: Code
+# 开始 > FROM子句 > WHERE子句 > GROUP BY子句 > HAVING子句 > SELECT子句 > ORDER BY子句 > LIMIT子句 > 最终结果
+
+-- SQLBook: Markup
+## where 子句
+
+| 运算符       | 描述                |
+| -----------  | -------------------|
+| =	           |等于                |
+| !=           |或 <>	不等于        |
+| >	           |大于                |
+| <	           |小于                |
+| >=	         |大于等于             |
+| <=	         |小于等于             |
+| BETWEEN AND	 |在某个范围内（闭区间）|
+| LIKE	       |搜索某种模式         |
+| AND	         |多个条件与           |
+| OR	         |多个条件或           |

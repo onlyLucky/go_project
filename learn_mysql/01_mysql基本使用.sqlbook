@@ -84,7 +84,7 @@ rename table user to new_user;
 -- 新增字段
 alter table user add column nickname varchar(50) null;
 -- 删除字段
-alter table user drop column nick;
+alter table user drop column nickname;
 
 -- 新增索引
 alter table user add index index_name (username);
@@ -92,3 +92,58 @@ alter table user add index index_name (username);
 show index from user;
 -- 删除索引
 alter table user drop index index_name;
+
+-- SQLBook: Markup
+## 数据操作
+
+插入数据
+-- SQLBook: Code
+-- 完整的插入语句
+insert into user(id,username,sex,created_at) value (
+  2,
+  "张三",
+  0,
+  "2024-01-01 00:00:00"
+)
+
+-- 因为有些字段设置了默认值和可以为null或自增长
+insert into user(username) value ("王五") #简单插入语句
+
+-- 批量插入
+insert into user(username) values ("李白"),("白居易"),("易重")
+-- SQLBook: Markup
+查询
+-- SQLBook: Code
+-- 查询这张表的全部数据
+select * from user;
+
+-- 查这张表的全部数据，字段部分显示
+select id,username from user;
+
+-- 条件查询，查询id为2的数据
+select * from user where id=2;
+-- SQLBook: Markup
+修改
+
+修改的前提就是要找到数据
+-- SQLBook: Code
+-- 找到id为2的将 age修改为20
+update user set age=20 where id = 2;
+
+-- 修改多个字段
+update user set age=24,sex = 0 where id=3;
+
+-- 批量修改
+update user set age=16 where id>4;
+
+-- 将某个字段进行赋值
+update user set age=user.age+2 where id = 5;
+-- SQLBook: Markup
+删除
+-- SQLBook: Code
+-- 删除id 为1的数据
+delete from user where id = 3;
+-- 删除表中所有数据
+delete from user where true;
+-- 重置自增计数器
+alter table user auto_increment = 1;

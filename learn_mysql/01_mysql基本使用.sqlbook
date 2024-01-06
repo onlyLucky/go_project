@@ -1,0 +1,94 @@
+-- SQLBook: Markup
+<div align="center">
+  <h1>mysql基本使用</h1>
+  <p>人类的悲欢并不相通，我只觉得他们吵闹</p>
+</div>
+
+## 基本命令操作
+
+连接
+-- SQLBook: Code
+// 连接本机的3306端口上的mysql服务
+mysql -uroot -proot
+
+// 连接本机的其他端口
+mysql -uroot -proot -P 3307
+
+// 连接其他主机的其他端口
+mysql -uroot -proot -P 3307 -h 192.168.100.113
+-- SQLBook: Markup
+### 库操作
+创建库
+-- SQLBook: Code
+create databases learnsql;
+
+-- 设置编码与字符集
+create databases learnsql default character set utf8 collate utf8_general_ci;
+
+-- 代表的是创建数据库 learnsql
+create database learnsql;
+-- 代表的是将库的默认编码格式设置为utf8
+default character set utf8
+-- 代表的数据库校对规则，utf8_bin将字符串中的每一个字符用二进制数据存储，区分大小写。utf8_genera_ci不区分大小写，ci为case insensitive的缩写，即大小写不敏感。utf8_general_cs区分大小写，cs为case sensitive的缩写，即大小写敏感
+collate utf8_general_ci
+
+-- 查看库
+show databases;
+-- 进入库
+use learnsql;
+-- 查看库里面的表
+show tables;
+-- 查看库的编码，有的编码写中文会报错，这个要注意
+show create database learnsql;
+-- 删除数据库
+drop database learnsql;
+-- 修改库的编码
+alter database learnsql character set utf8;
+
+-- SQLBook: Markup
+### 表操作
+前提必须是进入到某个库里面
+
+建表
+-- SQLBook: Code
+create table user(
+  id         int(11) primary key auto_increment not null comment '序号',                         # 主键，自动增长
+  username   varchar(50) unique                 not null comment '姓名',                         # 不能为空,不能重复
+  sex        boolean   default true comment '性别 1 男 0 女',                                     # tinyint(1) 一位 默认值是1
+  age        int(8)    default 18 comment '年龄，默认18',                                         # tinyint(1) 一位 默认值是1
+  created_at timestamp default CURRENT_TIMESTAMP on update  CURRENT_TIMESTAMP comment '创建时间'  # 创建时间,时间自动创建
+);
+-- SQLBook: Markup
+#### 字段约束
+
+常见的字段约束
+-- SQLBook: Code
+primary Key  # 记录的唯一标识，能够通过该标识确定唯一一条记录  一般用于记录id
+default # 默认值
+unique # 唯一约束
+not null # 空值约束，不可以为空，不写就是可以为空
+auto_increment # 自动增长
+
+
+-- 查看表结构
+desc user;
+-- 删除表
+drop table user;
+-- 删除表中全部数据
+delete from user where true;
+-- 重置自增计数器
+alter table user auto_increment = 1;
+
+-- 更改表名
+rename table user to new_user;
+-- 新增字段
+alter table user add column nickname varchar(50) null;
+-- 删除字段
+alter table user drop column nick;
+
+-- 新增索引
+alter table user add index index_name (username);
+-- 查看索引   默认是有一个主键索引的
+show index from user;
+-- 删除索引
+alter table user drop index index_name;

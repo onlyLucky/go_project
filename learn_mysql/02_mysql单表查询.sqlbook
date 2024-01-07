@@ -38,3 +38,39 @@ SELECT clause
 | LIKE	       |搜索某种模式         |
 | AND	         |多个条件与           |
 | OR	         |多个条件或           |
+
+下面插入数据，方便查询使用
+-- SQLBook: Code
+-- 插入数据（删除所有数据，自增更改为1，插入数据）
+delete from user where true;
+
+alter table user auto_increment = 1;
+
+insert into user(username,age,sex) values 
+  ('wangwu', 19, 0),
+  ('lisi', 20, 1),
+  ('zhangsan', 18, 0),
+  ('fengfeng', 23, 1),
+  ('fangfang', 18, 0),
+  ('fengfengzhidao', 25, 1),
+  ('feifei12138', 28, 0);
+
+
+-- 查询是女的
+select * from user where sex = 0;
+-- 查询年龄范围在18-23之间的
+select * from user where age>=18 and age<=23;
+select * from user where age between 18 and 23;
+select * from user where age in (18,19,20,21,22,23);
+-- 查询是女的，年龄在18-23的
+select * from user where sex = 0 and (age between 18 and 23);
+-- 查询名称是feng开头的
+select * from user where username like 'feng%';
+-- 查询年龄不是18
+select * from user where not age=18;
+select * from user where age <> 18;
+select * from user where age != 18;
+-- 查询年龄是18，或者名称是feng开头的
+select * from user where age = 18 or username like 'feng%';
+-- SQLBook: Markup
+## GROUP BY子句

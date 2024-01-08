@@ -74,3 +74,60 @@ select * from user where age != 18;
 select * from user where age = 18 or username like 'feng%';
 -- SQLBook: Markup
 ## GROUP BY子句
+除分组字段，其他字段要被套在聚合函数里面
+
+分组查询
+-- SQLBook: Code
+-- 分别统计男女生人数
+select sex, count(id) from user group by sex;
+-- 统计各个年龄的个数，并且把用户名显示出来
+select age, count(id) as 'number',group_concat(username) as 'usernames' from user group by age;
+-- SQLBook: Markup
+## HAVING 子句
+HAVING 和 WHERE 子句一样，用于指定选择条件。但 HAVING 和 WHERE 子句的用法上却有明显的区别。
+
+WHERE 作用于表和视图，HAVING 作用于组。
+
+WHERE 在分组和聚集计算之前选取输入行（因此，它控制哪些行进入聚集计算），而 HAVING 在分组和聚集之后选取分组
+-- SQLBook: Code
+-- 分别统计男女生人数，只显示人数大于3的数据
+select sex, count(id) as cnt from user group by sex having cnt > 3;
+-- SQLBook: Markup
+## ORDER BY 子句
+ORDER BY 子句用于根据指定的列对结果集进行排序。
+
+默认是主键升序 ASC（ascend） 降序 DESC
+-- SQLBook: Code
+-- 按照id 降序
+select * from user order by id desc;
+-- 先按照age升序，再按照id降序
+select * from user order by age,id desc;
+-- SQLBook: Markup
+## LIMIT 子句
+LIMIT 子句可以被用于强制 SELECT 语句返回指定的记录数。
+
+一般搭配offset，记录偏移
+-- SQLBook: Code
+-- 查全部
+select * from user;
+-- 查前两个
+select * from user limit 2;
+select * from user limit 0,2;
+-- 查两个，偏移两个
+select * from user limit 2,2;
+select * from user limit 2 offset 2;
+-- 分页查询
+-- page: n   size   offset: (n-1)*size    limit: size
+-- SQLBook: Markup
+## DISTINCT 子句
+去重
+-- SQLBook: Code
+-- 显示不重复的年龄段
+select distinct age from user;
+-- 按照年龄分组，并且统计，不重名的个数
+select age, count(distinct username) as cnt from user group by age;
+-- SQLBook: Markup
+## UNION 子句
+UNION 的作用是将两次或多次查询结果纵向合并起来。
+-- SQLBook: Code
+select 1,2 union select 3,4;

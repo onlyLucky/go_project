@@ -1,0 +1,81 @@
+-- SQLBook: Markup
+<div align="center">
+  <h1>mysql常用函数</h1>
+  <p></p>
+</div>
+
+## 数学函数
+-- SQLBook: Code
+-- 进制转换 CONV(x,f1,f2) 返回 f1 进制数变成 f2 进制数
+select conv("a",16,2);                    # 1010
+select conv("6E",18,8);                   # 172
+select conv(-17,10,-18);                  # -H
+select conv(1010,2,16);                   # A
+SELECT CONV(10+'10'+'10'+X'0a',10,10);    # 40
+select conv("6E",18,8);                   # 1010
+
+-- 绝对值
+select ABS(-1);
+select ABS(123);
+
+-- 向上取整
+select ceil(1.1);
+-- 向下取整
+select floor(1.9);
+
+-- 四舍五入
+select round(1.3);
+select round(1.6);
+-- SQLBook: Markup
+## 字符串函数
+-- SQLBook: Code
+-- 拼接字符串
+select concat("枫枫","知道")
+-- 拼接字符串，指定拼接符号
+select concat_ws("-","枫枫","知道");
+-- 提取字符串
+select substr("fengfeng",1,4);  # feng
+select substr('fengfeng', -4, 4); # feng 从后往前
+-- 按分隔符截取字符串前 N 个或者后 N 个子串
+select substring_index('fengfengzhidao.com', '.', 1); # fengfengzhidao
+select substring_index('fengfengzhidao.com', '.', -1); # com
+select substring_index('fengfengzhidao.com', '.', 2); # fengfengzhidao.com
+-- SQLBook: Markup
+## 日期函数
+-- SQLBook: Code
+-- 返回当前时间
+select now();
+-- 返回年月日的格式
+select CURDATE();
+-- 返回时间格式
+select CURTIME();
+-- 时间戳转日期
+select FROM_UNIXTIME(1704705328);
+-- 日期转时间戳
+select UNIX_TIMESTAMP("2024-01-08 17:17:17");
+set @dt = "2024-01-08 17:17:17";
+-- 时间选取
+select date(@dt) as 日期,
+  TIME(@dt) as 时间,
+  YEAR(@dt) as 年,
+  MONTH(@dt) as 月,
+  MONTHNAME(@dt) as 全名月,
+  day(@dt) as 月份中的天,
+  DAYNAME(@dt) as 星期名字,
+  dayofyear(@dt) as 一年中的天数,
+  HOUR(@dt) as 时,
+  minute(@dt) as 分,
+  second(@dt) as 秒,
+  quarter(@dt) as 季度,
+  week(@dt) as 周数;
+-- SQLBook: Markup
+## 比较函数
+-- SQLBook: Code
+select 1 in (1,2);
+select 1 in (2,4);
+select isnull(null);
+select isnull(1);
+-- 计算最小值
+select least(1,2,3,4);
+-- 返回最大值
+select greatest(1,2,3,4);

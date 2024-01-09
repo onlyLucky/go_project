@@ -70,3 +70,19 @@ select * from class right join student on student.class_id = class.id;
 第六种情况，右连接，通过班级连学生，以学生表为基表，学生信息完整显示出来了，但是学生2对应的班级信息是null
 
 ## 不同的连接关系
+
+他们的区别是：
+
+1. 返回不同
+
+    inner join会返回两表中一样的行；left join会返回左表的所有记录，哪怕它没有匹配到右表。
+
+2. 数量不同
+
+    inner join小于等于左表和右表的记录数量；left join：left join的数量以左表中的记录数量相同。
+
+3. 记录属性不同
+
+    inner join不足的记录属性会被直接舍弃；left join不足的记录属性用NULL填充。
+
+left和right就是基表不同，操作不同

@@ -1,0 +1,10 @@
+-- SQLBook: Markup
+<div align="center">
+  <h1>子查询</h1>
+  <p>子查询是另一个语句中的 SELECT 语句。</p>
+</div>
+
+子查询也称为内查询（Inner Query），必须位于括号之中。包含子查询的查询称为外查询（Outer Query）。子查询支持多层嵌套，也就是子查询可以包含其他子查询。
+-- SQLBook: Code
+-- 查询是男生的数据
+select * from user where sex = 1;

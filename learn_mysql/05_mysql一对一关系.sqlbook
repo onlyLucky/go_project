@@ -1,0 +1,84 @@
+-- SQLBook: Markup
+<div align="center">
+  <h1>一对一关系</h1>
+  <p>有一张常用字段的表，还有一张不怎么常用字段的表</p>
+</div>
+eg: 例如有一个用户表、和一个用户详情表，要实现，通过用户查用户详情，通过用户详情查用户，这样如何表示呢？
+
+用户表
+| id       | 用户名      |   年龄      |
+| -------- | -----------| -----------|
+| 1        |枫枫         |   23       |
+| 2        |张三         |   15       |
+
+用户详情表
+| user_id  | 地址        |爱好        |手机号       | 邮箱       |
+| -------  | ---------- | ----------| ---------  | ---------- |
+| 1        |浙江杭州      | 唱跳rap    |13812312312 | 123@hz.com |
+
+要实现，通过用户查用户详情，通过用户详情查用户,这样如何表示呢？
+
+## 表结构定义
+
+> 和定义一对多关系类似,但是一对多的外键只能在多的那张表上,比如学生和班级，学生是多的，班级是1，外键只能在学生表上。
+
+> 但是一对一的外键可以在不同位置，外键在用户表
+-- SQLBook: Code
+drop table user;
+drop table userinfo;
+
+create table user(
+  id            int(11)      not null AUTO_INCREMENT PRIMARY KEY,
+  name          varchar(16)  not null,
+  age           int(16)      default 18,
+  user_info_id  int(11)      null unique,  # 要设置不能重复
+  FOREIGN KEY(user_info_id) REFERENCES userinfo (user_id) on delete set null     #设置外键约束
+);
+
+create table userinfo(
+  user_id    int(11)      not null PRIMARY KEY,
+  `like`     varchar(16)  null,
+  `addr`     varchar(32),
+  `tel`      varchar(30),
+  `email`    varchar(32)
+)
+-- SQLBook: Markup
+外键在用户信息表
+-- SQLBook: Code
+create table user(
+  id     int(11)      not null AUTO_INCREMENT PRIMARY KEY,
+  name   varchar(16)  not null,
+  age    int(16)      default 18,
+);
+
+create table userinfo(
+  user_id    int(11)      not null PRIMARY KEY,
+  `like`     varchar(16)  null,
+  `addr`     varchar(32),
+  `tel`      varchar(30),
+  `email`    varchar(32),
+  Foreign Key (user_id) REFERENCES user(id) on delete cascade    # 设置外键约束
+);
+-- SQLBook: Markup
+> 注意，两种情况下用的外键删除逻辑是不一样的
+
+> 第一种情况：外键在用户表，删除用户信息，肯定不能把用户删掉，只能把用户关于这个外键的数据设置为null。
+>
+> 第二种情况：外键在用户信息表，删除用户表，这个用户信息就没用了，可以级联删除
+
+> 一般来说，一对一的外键是在常用表里面。
+
+## 数据写入
+使用第一种情况
+-- SQLBook: Code
+-- 先把用户向年轻数据加入
+insert into userinfo(user_id,`like`,addr,tel,email) value (1,"唱跳rap","浙江杭州","13812312312","123@hz.com");
+-- 用户关联用户详情
+insert into user(`name`,age,user_info_id) value ("枫枫",18,1);
+-- SQLBook: Markup
+## 数据查询
+-- SQLBook: Code
+-- 查看枫枫的爱好
+select `like` from userinfo where user_id = (select id from user where name = '枫枫');
+
+select name, `like` from user join userinfo on user.id = userinfo.user_id where name = '枫枫';

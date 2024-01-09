@@ -1,0 +1,72 @@
+-- SQLBook: Markup
+<div align="center">
+  <h1>连表查询</h1>
+  <p></p>
+</div>
+
+直接连，错误示范
+-- SQLBook: Code
+select * from student,class;
+-- SQLBook: Markup
+这种连接又被称为笛卡儿积，就是两两向交,后面要加上条件证明两表有相同的字段
+-- SQLBook: Code
+select * from student,class where student.class_id = class.id;
+-- SQLBook: Markup
+有三种连接模式：
+
+- inner join
+- left join
+- right join
+
+如果数据都能一一对应上的话，那么他们三个的输出结果没有任何区别。但是，数据有对不上的情况，那么他们三个就有区别了。
+
+例如
+
+班级表
+| id       | 班级名称       |
+| ----------- | -----------|
+| 1           |三年级一班    |
+| 2           |三年级二班    |
+| 3           |三年级三班    |
+
+学生表
+| id       | name       |class_id    |
+| -------  | ---------- | -----------|
+| 1        |wangwu      |1           |
+| 2        |lisi        |null        |
+| 3        |fengfeng    |2           |
+| 4        |fang        |2           |
+-- SQLBook: Code
+-- 删除class student 数据，自增变量更改为1。
+delete from class where true;
+alter table class AUTO_INCREMENT = 1;
+delete from student where true;
+alter table student AUTO_INCREMENT = 1;
+
+-- 添加数据
+insert into class(name) values ('三年级一班'),('三年级二班'),('三年级三班');
+insert into student(name,class_id) values('wangwu',1),('lisi',null),('fengfeng',2),('fang',2);
+
+-- 人员查询
+select * from student inner join class on student.class_id = class.id;
+select * from class inner join student on student.class_id = class.id;
+
+select * from student left join class on student.class_id = class.id;
+select * from class left join student on student.class_id = class.id;
+
+select * from student right join class on student.class_id = class.id;
+select * from class right join student on student.class_id = class.id;
+-- SQLBook: Markup
+第一种情况，内连接，通过学生连班级，就只有1 3 4的学生和班级记录
+
+第二种情况，内连接，通过班级连学生，和第一种情况是一样的
+
+第三种情况，左连接，通过学生连班级，学生信息是完整显示出来了，学生2对应的班级信息全是null
+
+第四种情况，左连接，通过班级连学生，班级信息完整显示出来了，但是班级3对应的学生信息是null
+
+第五种情况，右连接，通过学生连班级，以班级表为基表，班级信息是完整显示出来了，但是班级3对应的学生信息是null
+
+第六种情况，右连接，通过班级连学生，以学生表为基表，学生信息完整显示出来了，但是学生2对应的班级信息是null
+
+## 不同的连接关系

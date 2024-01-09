@@ -1,0 +1,106 @@
+-- SQLBook: Markup
+<div align="center">
+  <h1>一对多关系</h1>
+  <p>表与表的关系，也是实体与实体之间的关系</p>
+</div>
+eg: 如何记录学生和班级的关系呢？可以班级一张表，学生一张表，如何体现学生的归属关系呢？
+
+班级表
+| id       | 班级名称       |
+| ----------- | -----------|
+| 1           |三年级一班    |
+
+学生表
+| id       | name       |class_id    |
+| -------  | ---------- | -----------|
+| 1        |fengfeng    |1           |
+
+### 表结构
+-- SQLBook: Code
+create table class(
+  id    int(11)     not null AUTO_INCREMENT PRIMARY KEY,
+  name  varchar(16) not null
+);
+
+create table student(
+  id        int(11)       not null AUTO_INCREMENT PRIMARY key,
+  name      varchar(16)   not null,
+  class_id  int(11),
+  FOREIGN KEY (class_id) REFERENCES class (id)    # 设置外键约束
+)
+-- SQLBook: Markup
+插入数据
+-- SQLBook: Code
+insert into class(name) values ("三年级一班"),("三年级二班");
+
+insert into student(name, class_id) values ("wangwu", 1),("lisi", 1),("fengfeng",2);
+-- SQLBook: Markup
+### 一对多查询
+两种查询模式，一种是子查询模式，一种是连表查询
+-- SQLBook: Code
+-- 查询三年级一班的学生列表
+-- 先找到三年一班的id,再通过id去查学生
+
+select * from student where class_id = (select id from class where class.name='三年级一班');
+-- 通过连表查询，把这两张表合在一起
+select * from student left join class on class.id = student.class_id where class.name = '三年级一班';
+-- SQLBook: Markup
+### FOREIGN KEY
+外键不是必须的
+
+eg: 下面的建表语句也是可以的:
+-- SQLBook: Code
+drop table class;
+drop table student;
+
+
+create table class(
+  id    int(11)     not null AUTO_INCREMENT PRIMARY KEY,
+  name  varchar(16) not null
+);
+
+create table student(
+  id        int(11)       not null AUTO_INCREMENT PRIMARY key,
+  name      varchar(16)   not null,
+  class_id  int(11)
+)
+-- SQLBook: Markup
+外键的好处：
+
+1. 外键是数据库自身为了保证数据一致性。
+2. 有主外键的数据库设计可以增加ER图的可读性，这点在数据库设计时非常重要。
+
+
+### 关联删除规则
+
+常见的关联删除规则有以下几种：
+
+- `CASCADE`：级联删除，当主表中的记录被删除时，从表中与之相关联的记录也会被删除。
+- `SET NULL`：设置为空，当主表中的记录被删除时，从表中与之相关联的记录中的外键列会被设置为 NULL。
+- NO ACTION：不执行任何操作，当主表中的记录被删除时，会产生一个错误，从表中的记录不会受到影响。
+- RESTRICT：限制删除，当主表中的记录被删除时，如果从表中存在与之相关联的记录，删除操作会被拒绝。
+- SET DEFAULT：设置默认值，当主表中的记录被删除时，从表中与之相关联的记录中的外键列会被设置为默认值。
+-- SQLBook: Code
+create table class(
+  id    int(11)     not null AUTO_INCREMENT PRIMARY KEY,
+  name  varchar(16) not null
+);
+
+create table student(
+  id        int(11)       not null AUTO_INCREMENT PRIMARY key,
+  name      varchar(16)   not null,
+  class_id  int(11),
+  FOREIGN KEY (class_id) REFERENCES class (id) on delete cascade # 设置外键约束
+);
+-- SQLBook: Markup
+> 设置了外键的话，建表要先建没有外键关系的表，再建有外键关系的表。
+
+> 删除是反过来的，先删有外键关系的表，再删没有外键关系的表
+## 事后添加外键关联
+-- SQLBook: Code
+-- 创建关联
+alter table student add foreign key (class_id) references class(id) on delete set null;
+-- 删除关联
+alter table student drop foreign key class_id
+-- 删除外键
+alter table student drop class_id

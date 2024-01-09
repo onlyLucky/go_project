@@ -1,0 +1,57 @@
+-- SQLBook: Markup
+<div align="center">
+  <h1>多对多关系</h1>
+  <p>多对多就是双向的一对多，即A表中的一行数据对应B表中的多行数据，相同的B表中的一行数据也对应A表中的多行数据。</p>
+</div>
+eg: 例如文章和标签表，一篇文章有多个标签，一个标签可以关联多个文章，那么我们怎么记录这样的关系呢？
+
+文章表
+| id       | title            |
+| -------- | ---------------- | 
+| 1        |零基础入门python开发 |
+| 2        |零基础入门golang开发 |
+
+标签表
+| id       | title      |
+| -------  | ---------- |
+| 1        |python      |
+| 2        |golang      |
+
+假设，文章1的标签有1和2，我们如何表示呢？我们很容易就能想到，通过第三张表去记录他们之间的关系
+
+连接表
+| 文章id    | 标签id     |
+| -------  | ---------- |
+| 1        |1           |
+| 1        |1           |
+-- SQLBook: Code
+create table article(
+  id    int(11)  primary key auto_increment,
+  title varchar(16)
+);
+
+create table tag(
+  id    int(11) primary key auto_increment,
+  title varchar(16)
+);
+
+create table article_tag(
+ article_id  int(11),
+ tag_id      int(11),
+ primary key (article_id, tag_id),
+ Foreign Key (article_id) REFERENCES article(id),
+ Foreign Key (tag_id) REFERENCES tag(id)
+);
+-- SQLBook: Markup
+## 查询
+-- SQLBook: Code
+insert into article(title) value ('入门golang开发');
+insert into tag(title) values('前端'),('后端');
+insert into article_tag values(1,1),(1,2);
+
+-- 查询入门golang开发的标签有哪些
+select article.title, t.title as tag from article 
+  left join article_tag a on article.id = a.article_id 
+  left join tag t on a.tag_id = t.id where article.title = '入门golang开发';
+
+select tag.title from tag where id in(select article_tag.tag_id from article_tag where article_id in (select article.id from article where article.title = '入门golang开发'));

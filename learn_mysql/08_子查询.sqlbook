@@ -8,3 +8,19 @@
 -- SQLBook: Code
 -- 查询是男生的数据
 select * from user where sex = 1;
+select * from user where id in (select id from user where sex=1);
+-- SQLBook: Markup
+> 需要考虑子查询的结果集是单个还是多个。
+
+1. 子查询在where里面
+2. 子查询在form
+3. 子查询在select里面
+-- SQLBook: Code
+-- 查询查过男生平均年龄的男生
+select * from user where sex = 1 and age>(select avg(age) from user where sex=1 group by sex);
+-- 查询超过男生平均年龄的男生，并且把平均年龄显示出来
+select username,age,u1.avg from(select avg(age) as avg from user where sex = 1 group by sex) u1, user where user.age > u1.avg;
+-- 查询用户的年龄,平均年龄
+select username,age,(select avg(age) from user) as ag from user;
+-- 查询用户的年龄，性别，对应性别的平均年龄
+select username, age,sex,(select avg(age) from user u2 where u1.sex = u2.sex) as sex_ag from user u1; 

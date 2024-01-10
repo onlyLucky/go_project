@@ -18,5 +18,68 @@
 2. 不要对重复列表添加索引，例如性别
 
 > 主键默认增加索引
- 
+
+当数据比较多的时候，查询处理索引的作用比较明显。
+
+查看是否命中索引。
 -- SQLBook: Code
+explain select * from user where id = 1;
+
+show index from user;
+-- SQLBook: Markup
+![](./images/sql_index_type.png)
+
+mysql查询速度优化，可以根据type类型进行查看（type级别 越左边 查询速度越快）
+
+system > const > eq_ref > ref > fulltext > ref_or_null > index_merge > unique_subquery > index_subquery > range > index>all
+
+**Type级别解释**
+
+1. system：只有一条数据的系统表；或衍生表只能有一条数据的主查询；
+2. const: 仅仅能查出一条的SQL语句并且用于Primary key 或 unique索引;
+3. eq_ref：唯一性索引扫描，对于每个索引键，表中只有一条记录与之匹配。常见于主键或唯一索引扫描；
+    > 添加唯一键语法：alter table 表名 add constraint 索引名 unique index(列名)
+    > 检查字段是否唯一键：show index from 表名；被展示出来的皆是有唯一约束的；
+4. ref: 非唯一性索引：对于每个索引键的查询，返回匹配的所有行（可以是0，或多个）;非唯一性索引扫描，返回匹配某个单独值的所有行;本质上也是一种索引访问，它返回所有匹配某个单独值的行， 然而，它可能会找到多个符合条件的行，所以他应该属于查找和扫描的混合体。
+5. range: 检索指定范围的行，查找一个范围内的数据，where后面是一个范围查询 （between,in,> < >=);in 有时 有可能会失效，导致为ALL ；
+6. index: 把索引的数据全查出来 就是这个级别了。
+7. all: 不做索引 就是all;遍历全表以找到匹配的行
+
+## 索引分类
+1. 普通索引 index
+2. 主键索引，一张表只有一个主键索引
+3. 唯一索引
+4. 外键索引
+5. 联合索引
+-- SQLBook: Code
+-- 添加索引
+alter table user add index index_user_name(name);
+alter table user add index index_user_name_age(name,age);
+
+explain select * from user where name="枫枫";
+explain select * from user where name="枫枫" and age=18;
+
+-- 删除索引
+drop index index_user_name on user;
+-- SQLBook: Markup
+## 索引失效
+1. 不使用索引列进行查询
+2. 数据类型不匹配
+3. 前缀索引的使用不当，例如模糊匹配以%开头
+4. 使用函数或表达式进行查询
+5. 联合索引违反了最左前缀原则
+-- SQLBook: Code
+alter table user add index index_user_name_age_sex(name,age,sex);
+-- name               √  
+-- name age           √
+-- name age other     √
+-- name other         √
+
+-- 最左侧的name匹配索引生效；
+-- SQLBook: Markup
+### 参考链接：
+- [mysql索引失效](https://www.php.cn/faq/590073.html);
+- [mysql索引失效原因](https://baijiahao.baidu.com/s?id=1763976789426879771);
+- [查看索引命中](https://blog.51cto.com/u_16213406/7092180);
+- [最左前缀](https://blog.csdn.net/yuanchangliang/article/details/107798724);
+- [explain介绍](https://blog.csdn.net/weixin_46129192/article/details/126068620);

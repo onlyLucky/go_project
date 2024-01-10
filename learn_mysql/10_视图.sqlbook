@@ -1,0 +1,55 @@
+-- SQLBook: Markup
+<div align="center">
+  <h1>视图</h1>
+  <p>简单的说，视图就是封装了特定的查询语句</p>
+</div>
+
+- 视图是一个虚拟表，其内容由查询定义。
+- 同真实的表一样，视图包含系列带有名称的列和行数据。
+- 行和列数据来自定义视图的查询所引用的表，并且在引用视图时动态生成。
+- 简单的来说视图是由select结果组成的表。
+
+优点：
+
+1. 定制用户数据，聚焦特定的数据
+2. 简化数据操作
+3. 提高数据的安全性
+4. 共享所需数据
+5. 更改数据格式
+6. 重用SQL语句
+
+## 视图操作
+-- SQLBook: Code
+-- 创建一个视图
+create view v_article as select title from article;
+
+-- 使用视图
+select * from v_article;
+
+-- 修改视图
+alter view v_article as select id,title from article;
+
+-- 删除视图
+drop view if exists v_article;s
+-- SQLBook: Markup
+## 一些常用的视图查询
+可以将一些连表的或者复杂的sql语句，写到视图里面，例如我们讲子查询的时候
+-- SQLBook: Code
+-- 查询超过男生平均年龄的男生
+select * from user where sex = 1 and age>(select avg(age) from user where sex = 1 group by sex);
+
+-- 查询超过男生平均年龄的男生，并且把平均年龄显示出来
+select username,age,sex, u1.ag from (select avg(age) as ag from user where sex = 1 group by sex) u1, user where user.age>u1.ag and sex=1;
+
+-- 使用视图处理上面的逻辑
+create view v_avg_age as select avg(age) as ag from user where sex=1 group by sex;
+-- 查询超过男生平均年龄的男生
+select * from user where sex = 1 and age>(select ag from v_avg_age);
+-- 查询超过男生平均年龄的男生，并且把平均年龄显示出来
+select username,age,sex, u1.ag from (select ag from v_avg_age) u1, user where sex=1 and user.age > u1.ag;
+-- SQLBook: Markup
+### 参考链接：
+
+- [view视图](https://zhuanlan.zhihu.com/p/469263847)
+- [视图的作用与应用](https://blog.csdn.net/qq_59344127/article/details/131253883)
+- [mysql视图](http://www.yiidian.com/mysql/mysql-view.html)

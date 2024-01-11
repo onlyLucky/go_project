@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"gormLearn/connect"
+	"gormLearn/singleQuery"
 	"gormLearn/table"
 )
 
@@ -13,4 +14,6 @@ func main() {
 	fmt.Println(db)
 	// 2.模型定义
 	table.CreateTableFunc(db)
+	// 3.单表查询
+	singleQuery.SingleQueryFunc(db)
 }

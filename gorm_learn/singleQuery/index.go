@@ -106,4 +106,5 @@ func querySingleFunc(DB *gorm.DB){
 	keyUser=User{}  // 重新赋值
 	DB.Take(&keyUser,"4")
 	fmt.Println(keyUser,*keyUser.Email)
+	// Take的第二个参数，默认会根据主键查询，可以是字符串，可以是数字
 }

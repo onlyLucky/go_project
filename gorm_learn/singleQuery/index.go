@@ -6,12 +6,20 @@ import (
 	"strings"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 func SingleQueryFunc(DB *gorm.DB) {
+	/* 
+	// 1.建表
 	createTableFunc(DB)
+	// 2.单表插入
 	addDateFunc(DB)
-	multiAddDateFunc(DB)
+	// 3.批量插入
+	multiAddDateFunc(DB) 
+	 */
+	// 4.查询单条记录
+	querySingleFunc(DB)
 }
 
 // 创建表结构
@@ -75,4 +83,27 @@ func randomString(length int) string{
 		bytes[i] = lettersAndDigits[rand.Intn(len(lettersAndDigits))]
 	}
 	return string(bytes)
+}
+
+// 查询单条记录
+func querySingleFunc(DB *gorm.DB){
+	var user User
+	DB.Take(&user)
+	fmt.Println(user,*user.Email)
+	// 获取单条记录的方法很多，我们对比sql就很直观了
+	mysqlLogger := logger.Default.LogMode(logger.Info)
+	DB = DB.Session(&gorm.Session{Logger: mysqlLogger})
+	var firstUser User
+	DB.First(&firstUser)
+	fmt.Println(firstUser,*firstUser.Email)
+	var lastUser User
+	DB.Last(&lastUser)
+	fmt.Println(lastUser,*lastUser.Email)
+	/* 根据主键查询 */
+	var keyUser User
+	DB.Take(&keyUser,2)
+	fmt.Println(keyUser,*keyUser.Email)
+	keyUser=User{}  // 重新赋值
+	DB.Take(&keyUser,"4")
+	fmt.Println(keyUser,*keyUser.Email)
 }

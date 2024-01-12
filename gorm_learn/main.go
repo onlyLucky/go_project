@@ -8,7 +8,6 @@ import (
 )
 
 func main() {
-	
 	// 1.连接
 	db := connect.ConnectFunc()
 	fmt.Println(db)

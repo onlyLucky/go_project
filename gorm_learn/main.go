@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"gormLearn/connect"
+	"gormLearn/query"
 	"gormLearn/singleQuery"
 	"gormLearn/table"
 )
@@ -15,4 +16,7 @@ func main() {
 	table.CreateTableFunc(db)
 	// 3.单表查询
 	singleQuery.SingleQueryFunc(db)
+	// 4.建表Hook  /hook/index.go
+	// 5.高级查询
+	query.QueryDataFunc(db)
 }

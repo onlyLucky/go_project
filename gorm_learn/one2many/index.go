@@ -1,6 +1,8 @@
 package one2many
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 /*
 一对多关系 表结构建立
@@ -11,6 +13,10 @@ import "gorm.io/gorm"
 func OneToManyFunc(DB *gorm.DB) {
 	// 1.建表
 	createTable(DB)
+	// 2.一对多的添加
+	addFuc(DB)
+	// 3.外键添加
+	addForeignKeyFunc(DB)
 }
 
 // 默认外键关联
@@ -47,4 +53,32 @@ type Article struct {
 func createTable(DB *gorm.DB){
 	DB.Migrator().DropTable(&User{},&Article{})
 	DB.AutoMigrate(&User{},&Article{})
+}
+
+/* 2.一对多的添加 */
+
+func addFuc(DB *gorm.DB){
+	// 创建用户，并且创建文章
+	a1 := Article{Title: "python"}
+	a2 := Article{Title: "golang"}
+	user := User{Name: "枫枫",Articles: []Article{a1,a2}}
+	DB.Create(&user)
+
+	// 创建文章，关联已有用户
+	a1 = Article{Title: "golang零基础入门",UserID: 1}
+	DB.Create(&a1)
+	
+	user = User{}
+	DB.Take(&user,1)
+	DB.Create(&Article{Title: "python零基础入门",User: user})
+}
+
+/* 3.外键添加 */
+func addForeignKeyFunc(DB *gorm.DB){
+	var user User
+	DB.Take(&user,2)
+	var article Article
+	DB.Take(&article, 5)
+	user.Articles = []Article{article}
+	DB.Save(&user)
 }

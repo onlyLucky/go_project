@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"gormLearn/connect"
+	"gormLearn/one2many"
 	"gormLearn/query"
 	"gormLearn/singleQuery"
 	"gormLearn/table"
@@ -19,4 +20,7 @@ func main() {
 	// 4.建表Hook  /hook/index.go
 	// 5.高级查询
 	query.QueryDataFunc(db)
+	query.MoreQueryFunc(db)
+	// 6.一对多关系
+	one2many.OneToManyFunc(db)
 }

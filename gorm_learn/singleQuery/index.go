@@ -28,7 +28,7 @@ func SingleQueryFunc(DB *gorm.DB) {
 	// 7.更新
 	// uploadFunc(DB)
 	// 8.删除
-	delFunc(DB)
+	// delFunc(DB)
 }
 
 // 创建表结构

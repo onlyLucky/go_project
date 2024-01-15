@@ -17,7 +17,7 @@ type User struct {
 }
 
 func QueryDataFunc(DB *gorm.DB) {
-	// 1.插入数据
+	/* // 1.插入数据
 	// setMoreData(DB)
 	// 2.where 查询
 	whereQuery(DB)
@@ -31,6 +31,16 @@ func QueryDataFunc(DB *gorm.DB) {
 	orQuery(DB)
 	// 7.Select 选择字段 
 	selectQuery(DB)
+	// 8.排序
+	sortQuery(DB)
+	// 9.分页查询
+	pageQuery(DB)
+	// 10.去重
+	distinctQuery(DB)
+	// 11.分组查询
+	groupQuery(DB)
+	// 12.执行原生sql
+	sqlQuery(DB) */
 }
 
 /* 1.插入一些数据 */
@@ -61,22 +71,22 @@ func whereQuery(DB *gorm.DB){
 	var users []User
 	// 查询用户名是枫枫的
 	DB.Where("name=?","枫枫").Find(&users)
-	printQueryData(users,"查询用户名是枫枫的:")
+	PrintQueryData(users,"查询用户名是枫枫的:")
 	// 查询用户名不是枫枫
 	DB.Where("name <> ?","枫枫").Find(&users)
-	printQueryData(users,"查询用户名不是枫枫:")
+	PrintQueryData(users,"查询用户名不是枫枫:")
 	// 查询用户名包含 如燕，李元芳的
 	DB.Where("name in ?",[]string{"如燕", "李元芳"}).Find(&users)
-	printQueryData(users,"查询用户名包含 如燕，李元芳的:")
+	PrintQueryData(users,"查询用户名包含 如燕，李元芳的:")
 	// 查询姓李的
 	DB.Where("name like ?","李%").Find(&users)
-	printQueryData(users,"查询姓李的:")
+	PrintQueryData(users,"查询姓李的:")
 	// 查询年龄大于23，是qq邮箱的
 	DB.Where("age > ? and email like ?","23","%@qq.com").Find(&users)
-	printQueryData(users,"查询年龄大于23，是qq邮箱的:")
+	PrintQueryData(users,"查询年龄大于23，是qq邮箱的:")
 	// 查询是qq邮箱的，或者是女的
 	DB.Where("gender = ? or email like ?",false,"%@qq.com").Find(&users)
-	printQueryData(users,"查询是qq邮箱的，或者是女的:")
+	PrintQueryData(users,"查询是qq邮箱的，或者是女的:")
 }
 
 /* 3.使用结构体查询  会过滤零值*/
@@ -84,14 +94,14 @@ func structQuery(DB *gorm.DB){
 	var users []User
 	DB.Where(&User{Name: "李元芳",Age: 0}).Find(&users)
 	
-	printQueryData(users,"使用结构体查询:")
+	PrintQueryData(users,"使用结构体查询:")
 }
 
 /* 4.使用map查询 不会过滤零值 */
 func mapQuery(DB *gorm.DB){
 	var users []User
 	DB.Where(map[string]any{"name":"李元芳","age":0}).Find(&users)
-	printQueryData(users,"使用map查询 不会过滤零值:")
+	PrintQueryData(users,"使用map查询 不会过滤零值:")
 }
 
 /* 5.not条件 和where中的not等价*/
@@ -99,21 +109,21 @@ func notQuery(DB *gorm.DB){
 	// 排除年龄大于23的
 	var users []User
 	DB.Not("age>23").Find(&users)
-	printQueryData(users,"not条件,排除年龄大于23的:")
+	PrintQueryData(users,"not条件,排除年龄大于23的:")
 }
 
 /* 6.Or条件  和where中的or等价*/
 func orQuery(DB *gorm.DB){
 	var users []User
 	DB.Or("gender = ?",false).Or(" email like ?","%@qq.com").Find(&users)
-	printQueryData(users,"Or条件,查询是qq邮箱的，或者是女的:")
+	PrintQueryData(users,"Or条件,查询是qq邮箱的，或者是女的:")
 }
 
 /* 7.Select 选择字段 */
 func selectQuery(DB *gorm.DB){
 	var users []User
 	DB.Select("name", "age").Find(&users)
-	printQueryData(users,"Select 选择字段,没有被选中，会被赋零值:")
+	PrintQueryData(users,"Select 选择字段,没有被选中，会被赋零值:")
 
 	// 可以使用扫描Scan，将选择的字段存入另一个结构体中
 	type selectUser struct {
@@ -142,9 +152,90 @@ func selectQuery(DB *gorm.DB){
 	DB.Table("t_user").Select("name", "age").Scan(&colUsers)
 	fmt.Println(colUsers)
 }
+/* 8.排序 */
+func sortQuery(DB *gorm.DB){
+	// 根据年龄倒序 desc 降序   asc 升序
+	var users []User
+	DB.Order("name asc,age desc").Find(&users)
+	PrintQueryData(users,"排序,根据年龄倒序:")
+}
+/* 9.分页查询 */
+func pageQuery(DB *gorm.DB){
+	var users []User
+	// 一页两条，第1页
+	DB.Limit(2).Offset(0).Find(&users)
+	PrintQueryData(users,"分页查询,一页两条，第1页:")
+	// 第2页
+	DB.Limit(2).Offset(2).Find(&users)
+	PrintQueryData(users,"分页查询,一页两条，第2页:")
+	// 第3页
+	DB.Limit(2).Offset(4).Find(&users)
+	PrintQueryData(users,"分页查询,一页两条，第3页:")
 
+	// 通用的写法
+	users = []User{}
+	// pageSize
+	limit := 2
+	// pageNum
+	page := 1
+	offset := (page - 1) * limit
+	DB.Limit(limit).Offset(offset).Find(&users)
+	PrintQueryData(users,"分页查询通用写法,一页两条，第1页:")
+}
 
-func printQueryData(list []User,desc string){
+/* 10.去重 */
+func distinctQuery(DB *gorm.DB){
+	var ageList []int
+	DB.Table("t_user").Select("age").Distinct("age").Scan(&ageList)
+	fmt.Println(ageList)
+	// 其他写法
+	DB.Table("t_user").Select("distinct age").Scan(&ageList)
+	fmt.Println(ageList)
+}
+
+/* 11.分组查询 */
+func groupQuery(DB *gorm.DB){
+	var ageList []int
+	// 查询男生的个数和女生的个数
+	DB.Table("t_user").Select("count(id)").Group("gender").Scan(&ageList)
+	fmt.Println(ageList)
+	// 精确哪一个是男生，哪一个是女生
+	type AgeGroup struct {
+		Gender int
+		Count  int `gorm:"column:count(id)"`
+	}
+	var ageTotal []AgeGroup
+	// 查询男生的个数和女生的个数
+	DB.Table("t_user").Select("count(id)","gender").Group("gender").Scan(&ageTotal)
+	fmt.Println(ageTotal)
+	// 再精确点
+	type AgeGroupMore struct{
+		Gender int
+		Count int `gorm:"column:count(id)"`
+		Name string `gorm:"column:group_concat(name)"`
+	}
+
+	var ageMore []AgeGroupMore
+	// 查询男生的个数和女生的个数
+	DB.Table("t_user").Select("count(id)","gender","group_concat(name)").Group("gender").Scan(&ageMore)
+	fmt.Println(ageMore)
+
+	/* 使用gorm不会让你忘记原生sql的编写 */
+}
+
+/* 12.执行原生sql */
+func sqlQuery(DB *gorm.DB){
+	type AgeGroupMore struct{
+		Gender int
+		Count int `gorm:"column:count(id)"`
+		Name string `gorm:"column:group_concat(name)"`
+	}
+	var ageMore []AgeGroupMore
+	DB.Raw(`SELECT count(id), gender, group_concat(name) FROM students GROUP BY gender`).Scan(&ageMore)
+	fmt.Println(ageMore)
+}
+
+func PrintQueryData(list []User,desc string){
 	fmt.Println(desc+"=================")
 	if(len(list)<=0){
 		fmt.Println(list)
@@ -155,3 +246,4 @@ func printQueryData(list []User,desc string){
 		fmt.Println(string(data))
 	}
 }
+

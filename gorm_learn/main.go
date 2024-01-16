@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gormLearn/connect"
 	"gormLearn/one2many"
+	"gormLearn/one2one"
 	"gormLearn/query"
 	"gormLearn/singleQuery"
 	"gormLearn/table"
@@ -23,4 +24,6 @@ func main() {
 	query.MoreQueryFunc(db)
 	// 6.一对多关系
 	one2many.OneToManyFunc(db)
+	// 7.一对一关系
+	one2one.OneToOneFunc(db)
 }

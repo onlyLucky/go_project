@@ -13,12 +13,12 @@ import (
 */
 
 func OneToOneFunc(DB *gorm.DB) {
-	// 1.表结构搭建
+	/* // 1.表结构搭建
 	createFunc(DB)
 	// 2.添加记录
 	addDataFunc(DB)
 	// 3.查询
-	queryFunc(DB)
+	queryFunc(DB) */
 }
 
 type User struct {

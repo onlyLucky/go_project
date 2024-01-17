@@ -15,7 +15,7 @@ func CreateTableFunc(DB *gorm.DB) {
 	// CREATE TABLE `t_student` (`id` bigint unsigned AUTO_INCREMENT,`name` longtext,`email` longtext,PRIMARY KEY (`id`))
 	// bigint,longtext默认的类型太大了
 	
-	createTableTagFunc(DB)
+	// createTableTagFunc(DB)
 }
 
 

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"gormLearn/connect"
+	"gormLearn/many2many"
 	"gormLearn/one2many"
 	"gormLearn/one2one"
 	"gormLearn/query"
@@ -26,4 +27,6 @@ func main() {
 	one2many.OneToManyFunc(db)
 	// 7.一对一关系
 	one2one.OneToOneFunc(db)
+	// 8.多对多关系
+	many2many.ManyToManyFunc(db)
 }

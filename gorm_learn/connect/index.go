@@ -63,13 +63,17 @@ func ConnectFunc() (db *gorm.DB) {
 	if err != nil{
 		panic("连接数据库失败，error: "+err.Error())
 	}
+	db.Session(&gorm.Session{Logger: newLogger})
+	/* // 创建数据库
+	db.Migrator().DropTable(&StudentInfo{})
+	db.AutoMigrate(&StudentInfo{})
 
 	// 日志打印
 	var model StudentInfo
 	session := db.Session(&gorm.Session{Logger: newLogger})
-	session.First(&model)  // SELECT * FROM `t_students` ORDER BY `t_students`.`name` LIMIT 1
+	session.First(&model)  // SELECT * FROM `t_students` ORDER BY `t_students`.`name` LIMIT 1 */
 	
-	db.Debug().First(&model)
+	// db.Debug().First(&model)
 
 	return
 }

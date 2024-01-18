@@ -19,19 +19,20 @@ func ManyToManyFunc(DB *gorm.DB) {
   queryFunc(DB)
   // 4.更新
   uploadFunc(DB)
-  // 5.customizeFunc
+  // 5.自定义连接表
+  customizeFunc(DB)
 }
 
 type Tag struct {
   ID       uint
   Name     string
-  Articles []Article `gorm:"many2many:article_tags;"` // 用于反向引用
+  Articles []Article `gorm:"many2many:article_tag;"` // 用于反向引用
 }
 
 type Article struct {
   ID    uint
   Title string
-  Tags  []Tag `gorm:"many2many:article_tags;"`
+  Tags  []Tag `gorm:"many2many:article_tag;"`
 }
 
 /* 1.表结构创建 */
@@ -104,6 +105,8 @@ func customizeFunc(DB *gorm.DB){
     TagID     uint `gorm:"primaryKey"`
     CreatedAt time.Time
   }
+  DB.Migrator().DropTable(&Tag{},&Article{},&ArticleTag{})
+	DB.AutoMigrate(&Tag{},&Article{},&ArticleTag{})
 }
 
 

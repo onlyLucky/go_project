@@ -21,6 +21,8 @@ func ManyToManyFunc(DB *gorm.DB) {
   uploadFunc(DB)
   // 5.自定义连接表
   customizeFunc(DB)
+  // 6.操作案例
+  demoFunc(DB)
 }
 
 type Tag struct {
@@ -87,27 +89,65 @@ func uploadFunc(DB *gorm.DB){
   DB.Model(&article).Association("Tags").Replace(tags)
   fmt.Println(article)
 }
+type ArticleTag struct {
+  ArticleID uint `gorm:"primaryKey"`
+  TagID     uint `gorm:"primaryKey"`
+  CreatedAt time.Time
+}
 /* 5.自定义连接表 */
 func customizeFunc(DB *gorm.DB){
   type Article struct {
     ID    uint
     Title string
-    Tags  []Tag `gorm:"many2many:article_tags"`
+    Tags  []Tag `gorm:"many2many:article_tag"`
   }
   
   type Tag struct {
     ID   uint
     Name string
   }
-  
-  type ArticleTag struct {
-    ArticleID uint `gorm:"primaryKey"`
-    TagID     uint `gorm:"primaryKey"`
-    CreatedAt time.Time
-  }
   DB.Migrator().DropTable(&Tag{},&Article{},&ArticleTag{})
 	DB.AutoMigrate(&Tag{},&Article{},&ArticleTag{})
 }
 
+/* 6.操作案例 */
+func demoFunc(DB *gorm.DB){
+  // 添加文章并添加标签，并自动关联
+  DB.SetupJoinTable(&Article{}, "Tags", &ArticleTag{})  // 要设置这个，才能走到我们自定义的连接表
+  DB.Create(&Article{
+    Title: "flask零基础入门",
+    Tags: []Tag{
+      {Name: "python"},
+      {Name: "后端"}, 
+      {Name: "web"},
+    },
+  })
+  // 添加文章，关联已有标签
+  var tags []Tag
+  DB.Find(&tags,"name in ?",[]string{"python","web"})
+  DB.Create(&Article{
+    Title: "flash请求对象",
+    Tags: tags,
+  })
+  // 给已有文章关联标签
+  article := Article{
+    Title: "django基础",
+  }
+  DB.Create(&article)
+  var at Article
+  tags = []Tag{}
+  DB.Find(&tags,"name in ?",[]string{"python","web"})
+  DB.Take(&at,article.ID).Association("Tags").Append(tags)
+  // 替换已有文章的标签
+  article = Article{}
+  tags = []Tag{}
+  DB.Find(&tags,"name in ?",[]string{"后端"})
+  DB.Take(&article,"title = ?", "django基础")
+  DB.Model(&article).Association("Tags").Replace(tags)
+  // 
+  articles := []Article{}
+  DB.Preload("Tags").Find(&articles)
+  fmt.Println(articles)
+}
 
 

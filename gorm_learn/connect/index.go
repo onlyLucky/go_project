@@ -55,7 +55,7 @@ func ConnectFunc() (db *gorm.DB) {
 		// Logger: newLogger, // 自定义日志设置
 		// 更改命名约定
 		NamingStrategy: schema.NamingStrategy{ 
-			TablePrefix:   "c_",  // 表名前缀 t: 高级查询之前(1-5) a: 一对多(6)  b: 一对一(7)  c: 多对多(8)
+			TablePrefix:   "d_",  // 表名前缀 t: 高级查询之前(1-5) a: 一对多(6)  b: 一对一(7)  c: 多对多(8)  d: 自定义数据结构（9）
 			SingularTable: true, // 单数表名 eg:user  false: users  true: user 
 			NoLowerCase:   false, // 驼峰 eg:MyStudent false:  my_student  true: mystudent
 		},

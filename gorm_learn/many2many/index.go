@@ -11,7 +11,7 @@ import (
 多对多关系，需要用第三张表存储两张表的关系
 */
 func ManyToManyFunc(DB *gorm.DB) {
-  // 1.创建数据
+  /* // 1.创建数据
   createFunc(DB)
   // 2.添加数据
   addDataFunc(DB)
@@ -23,6 +23,8 @@ func ManyToManyFunc(DB *gorm.DB) {
   customizeFunc(DB)
   // 6.操作案例
   demoFunc(DB)
+  // 7.自定义连接表主键 
+  customizeTipFunc(DB) */
 }
 
 type Tag struct {
@@ -150,4 +152,33 @@ func demoFunc(DB *gorm.DB){
   fmt.Println(articles)
 }
 
+/* 
+7.自定义连接表主键 
+实用案例：那么按照gorm默认的主键名，那就分别是ArticleModelID，TagModelID，太长了，根本就不实用
+joinForeignKey 连接的主键id
+JoinReferences 关联的主键id
+*/
+type ArticleModel struct {
+  ID    uint
+  Title string
+  Tags  []TagModel `gorm:"many2many:article_tags;joinForeignKey:ArticleID;JoinReferences:TagID"`
+}
 
+type TagModel struct {
+  ID       uint
+  Name     string
+  Articles []ArticleModel `gorm:"many2many:article_tags;joinForeignKey:TagID;JoinReferences:ArticleID"`
+}
+
+type ArticleTagModel struct {
+  ArticleID uint `gorm:"primaryKey"` // article_id
+  TagID     uint `gorm:"primaryKey"` // tag_id
+  CreatedAt time.Time
+}
+
+func customizeTipFunc(DB *gorm.DB){
+  DB.SetupJoinTable(&ArticleModel{}, "Tags", &ArticleTagModel{})
+  DB.SetupJoinTable(&TagModel{}, "Articles", &ArticleTagModel{})
+  DB.Migrator().DropTable(&ArticleModel{},&TagModel{},&ArticleTagModel{})
+	DB.AutoMigrate(&ArticleModel{},&TagModel{},&ArticleTagModel{})
+}

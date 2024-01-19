@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"gormLearn/connect"
+	"gormLearn/dataType"
 	"gormLearn/many2many"
 	"gormLearn/one2many"
 	"gormLearn/one2one"
@@ -29,4 +30,6 @@ func main() {
 	one2one.OneToOneFunc(db)
 	// 8.多对多关系
 	many2many.ManyToManyFunc(db)
+	// 9.自定义数据类型
+	dataType.DataTypeFunc(db)
 }

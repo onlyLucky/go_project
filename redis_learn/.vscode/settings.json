@@ -5,6 +5,7 @@
     "Geospatial",
     "MGET",
     "RENAMENX",
-    "Sanfilippo"
+    "Sanfilippo",
+    "SETNX"
   ]
 }

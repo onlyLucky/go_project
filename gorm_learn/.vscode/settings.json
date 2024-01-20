@@ -3,8 +3,12 @@
     "Dbname",
     "gorm",
     "hotmail",
+    "Inno",
+    "ISAM",
+    "lisi",
     "longtext",
     "mystudent",
-    "varchar"
+    "varchar",
+    "zhangsan"
   ]
 }

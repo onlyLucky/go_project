@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"gormLearn/affairs"
 	"gormLearn/connect"
 	"gormLearn/dataType"
 	"gormLearn/many2many"
@@ -32,4 +33,6 @@ func main() {
 	many2many.ManyToManyFunc(db)
 	// 9.自定义数据类型
 	dataType.DataTypeFunc(db)
+	// 10.事务
+	affairs.AffairsFunc(db)
 }

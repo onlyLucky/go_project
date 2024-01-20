@@ -11,7 +11,7 @@ import (
 )
 
 func DataTypeFunc(DB *gorm.DB) {
-	// 1.建表
+	/* // 1.建表
 	crateTableFunc(DB)
 	// 2.添加和查询
 	addDataFunc(DB)
@@ -20,7 +20,7 @@ func DataTypeFunc(DB *gorm.DB) {
 	enum2Func()
 	enum3Func()
 	enum4Func()
-	enum5Func()
+	enum5Func() */
 }
 
 /* 

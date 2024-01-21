@@ -1,11 +1,29 @@
 {
   "cSpell.words": [
     "antirez",
+    "appendonly",
     "EVALSHA",
     "Geospatial",
+    "HGET",
+    "HSET",
+    "keepalive",
+    "logfile",
+    "loglevel",
+    "LPUSH",
     "MGET",
+    "nssm",
+    "pidfile",
     "RENAMENX",
+    "requirepass",
+    "RPOP",
+    "SADD",
     "Sanfilippo",
-    "SETNX"
+    "SETNX",
+    "SMEMBERS",
+    "Vinit",
+    "WITHSCORES",
+    "ZADD",
+    "ZRANGE",
+    "zset"
   ]
 }

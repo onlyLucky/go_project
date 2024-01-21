@@ -12,7 +12,7 @@
 - 在 Linux 环境下的安装步骤
 - Redis 配置文件详解（redis.conf）
 - 启动、停止及重启 Redis 服务
-- Redis 客户端工具使用s
+- Redis 客户端工具使用
 
 #### 3. Redis 基本操作
 

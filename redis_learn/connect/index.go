@@ -25,5 +25,5 @@ func ConnectFunc() {
 	fmt.Println(pong) // 输出：PONG
 	DB = rdb
 	// 使用完后关闭连接（通常在一个长生命周期的服务里，客户端会一直保持打开状态）
-	defer rdb.Close()
+	// defer rdb.Close()
 }

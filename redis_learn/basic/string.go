@@ -48,9 +48,5 @@ func StringFuc(rdb *redis.Client) {
 	log.Printf("Decreased counter: %d\n", decValue)
 
 	// 获取并设置（Get and Set）
-	oldVal, err := rdb.GetSet(ctx, "myKey", "new value").Result()
-	log.Printf("Old value was: %s, New value is now set to: %s\n", oldVal, "new value")
-	if err != nil {
-		log.Fatal(err)
-	}
+	rdb.GetSet(ctx, "myKey", "new value")
 }

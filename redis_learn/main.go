@@ -15,4 +15,8 @@ func main() {
 	basic.ListFunc(connect.DB)
 	// 集合
 	basic.SetFunc(connect.DB)
+	// 哈希
+	basic.HashFunc(connect.DB)
+	// 有序集合
+	basic.SortedSet(connect.DB)
 }

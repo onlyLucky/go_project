@@ -19,4 +19,6 @@ func main() {
 	basic.HashFunc(connect.DB)
 	// 有序集合
 	basic.SortedSet(connect.DB)
+	// 数据持久化
+	basic.RDB2AOF(connect.DB)
 }

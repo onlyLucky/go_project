@@ -38,6 +38,13 @@
       "request": "launch",
       "mode": "auto",
       "program": "${workspaceFolder}/interface"
+    },
+    { // 标准库
+      "name": "standardLibs",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/standardLibs"
     }
   ]
 }

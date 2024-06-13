@@ -18,5 +18,19 @@
       "mode": "auto",
       "program": "${workspaceFolder}/interface"
     },
+    { // channelSelect
+      "name": "channelSelect",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/channelSelect"
+    },
+    { // 函数
+      "name": "function",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/function"
+    },
   ]
 }

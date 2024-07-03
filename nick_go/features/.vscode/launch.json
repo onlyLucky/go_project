@@ -32,5 +32,12 @@
       "mode": "auto",
       "program": "${workspaceFolder}/function"
     },
+    { // 测试函数
+      "name": "funcTest",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/funcTest"
+    },
   ]
 }
